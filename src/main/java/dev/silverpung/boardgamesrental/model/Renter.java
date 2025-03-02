@@ -23,7 +23,7 @@ public class Renter {
     private String barcode;
 
     @NotNull
-    private String name;
+    private String userName;
 
     @ManyToOne
     @JoinColumn(name = "eventId", nullable = false)
@@ -32,9 +32,9 @@ public class Renter {
     @OneToMany(mappedBy = "renter", cascade = CascadeType.REMOVE)
     private Set<Rents> rentedGames;
 
-    public Renter(String barcode, String name) {
+    public Renter(String barcode, String userName) {
         this.barcode = barcode;
-        this.name = name;
+        this.userName = userName;
     }
 
     @Override
@@ -42,7 +42,7 @@ public class Renter {
         return "Renter{" +
                 "id=" + id +
                 ", barcode='" + barcode + '\'' +
-                ", name='" + name + '\'' +
+                ", name='" + userName + '\'' +
                 '}';
     }
 }

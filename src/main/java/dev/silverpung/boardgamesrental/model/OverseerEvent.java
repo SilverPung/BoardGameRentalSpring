@@ -17,6 +17,7 @@ public class OverseerEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Enumerated(EnumType.STRING)
     private PermissionsType permissionsType;
 
     @ManyToOne

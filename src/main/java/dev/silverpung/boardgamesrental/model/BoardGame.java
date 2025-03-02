@@ -30,6 +30,7 @@ public class BoardGame {
 
     private String notes;
 
+
     private int quantity;
     private int quantityAvailable;
 

@@ -1,6 +1,7 @@
 package dev.silverpung.boardgamesrental.model;
 
 
+import dev.silverpung.boardgamesrental.model.request.BoardGameRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -48,7 +49,7 @@ public class BoardGame {
     private Event event;
 
     @OneToMany(mappedBy = "boardGame", cascade = CascadeType.REMOVE)
-    private Set<Rents> rents;
+    private Set<Rent> rents;
 
     @Override
     public String toString() {
@@ -60,6 +61,15 @@ public class BoardGame {
                 ", quantity=" + quantity +
                 ", quantityAvailable=" + quantityAvailable +
                 '}';
+    }
+
+    public void setData(BoardGameRequest boardGameRequest) {
+        this.barcode = boardGameRequest.getBarcode();
+        this.name = boardGameRequest.getName();
+        this.description = boardGameRequest.getDescription();
+        this.notes = boardGameRequest.getNotes();
+        this.quantity = boardGameRequest.getQuantity();
+        this.quantityAvailable = boardGameRequest.getQuantityAvailable();
     }
 
 

@@ -37,9 +37,7 @@ public class RenterService {
 
     public Renter save(RenterRequest renterRequest) {
         Renter renter = new Renter();
-        renter.setEvent(eventRepository.findById(renterRequest.getEventId()).orElseThrow(
-                () -> new RuntimeException("Event with id " + renterRequest.getEventId() + " not found")
-        ));
+        renter.setEvent(eventRepository.getValidEventById(renterRequest.getEventId()));
         renter.setData(renterRequest);
         return renterRepository.save(renter);
     }
@@ -52,12 +50,8 @@ public class RenterService {
     }
 
     public Renter update(Long id, RenterRequest renterRequest) {
-        Renter renter = renterRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Renter with id " + id + " not found")
-        );
-        renter.setEvent(eventRepository.findById(renterRequest.getEventId()).orElseThrow(
-                () -> new RuntimeException("Event with id " + renterRequest.getEventId() + " not found")
-        ));
+        Renter renter = renterRepository.getValidRenterById(id);
+        renter.setEvent(eventRepository.getValidEventById(renterRequest.getEventId()));
         renter.setData(renterRequest);
         return renterRepository.save(renter);
     }

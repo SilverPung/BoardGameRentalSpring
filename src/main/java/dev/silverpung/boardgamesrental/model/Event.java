@@ -1,6 +1,7 @@
 package dev.silverpung.boardgamesrental.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -29,12 +30,15 @@ public class Event {
     @NotNull
     private Date date;
 
+    @JsonIgnoreProperties("event")
     @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
     private Set<OverseerEvent> overseerEvents;
 
+    @JsonIgnoreProperties("event")
     @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
     private Set<BoardGame> boardGames;
 
+    @JsonIgnoreProperties("event")
     @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE)
     private Set<Renter> renters;
 

@@ -1,6 +1,7 @@
 package dev.silverpung.boardgamesrental.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -33,6 +34,7 @@ public class Overseer {
     @NotNull
     private String password;
 
+    @JsonIgnoreProperties("overseer")
     @OneToMany(mappedBy = "overseer", cascade = CascadeType.REMOVE)
     private Set<OverseerEvent> overseerEvents;
 

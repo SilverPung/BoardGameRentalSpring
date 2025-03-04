@@ -27,9 +27,7 @@ public class OverseerService {
     }
 
     public Overseer getById(Long id) {
-        return overseerRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Overseer on id " + id + " not found")
-        );
+        return overseerRepository.getValidOverseerById(id);
     }
 
     public Overseer save(Overseer overseer) {

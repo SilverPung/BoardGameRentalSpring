@@ -1,6 +1,7 @@
 package dev.silverpung.boardgamesrental.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import dev.silverpung.boardgamesrental.model.request.RenterRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -26,10 +27,13 @@ public class Renter {
     @NotNull
     private String userName;
 
+    @JsonIgnoreProperties("renter")
     @ManyToOne
     @JoinColumn(name = "eventId", nullable = false)
     private Event event;
 
+
+    @JsonIgnoreProperties("renter")
     @OneToMany(mappedBy = "renter", cascade = CascadeType.REMOVE)
     private Set<Rent> rentedGames;
 

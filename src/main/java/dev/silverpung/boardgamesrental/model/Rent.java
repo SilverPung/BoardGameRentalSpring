@@ -1,6 +1,7 @@
 package dev.silverpung.boardgamesrental.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import dev.silverpung.boardgamesrental.model.request.RentRequest;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,10 +20,12 @@ public class Rent {
 
     private boolean returned;
 
+    @JsonIgnoreProperties("rents")
     @ManyToOne
     @JoinColumn(name = "renterId", nullable = false)
     private Renter renter;
 
+    @JsonIgnoreProperties("rents")
     @ManyToOne
     @JoinColumn(name = "boardGameId", nullable = false)
     private BoardGame boardGame;

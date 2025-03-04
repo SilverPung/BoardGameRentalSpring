@@ -1,16 +1,19 @@
 package dev.silverpung.boardgamesrental.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import dev.silverpung.boardgamesrental.model.types.PermissionsType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.UniqueElements;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"overseerId", "eventId"})})
 public class OverseerEvent {
 
     @Id
@@ -20,10 +23,12 @@ public class OverseerEvent {
     @Enumerated(EnumType.STRING)
     private PermissionsType permissionsType;
 
+    @JsonIgnoreProperties("overseerEvents")
     @ManyToOne
     @JoinColumn(name = "overseerId", nullable = false)
     private Overseer overseer;
 
+    @JsonIgnoreProperties("overseerEvents")
     @ManyToOne
     @JoinColumn(name = "eventId", nullable = false)
     private Event event;

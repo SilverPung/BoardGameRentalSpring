@@ -31,8 +31,7 @@ public class RentService {
     }
 
     public Rent getById(long id) {
-        return rentRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Rent with Id " + id + " not found"));
+        return rentRepository.getValidRentById(id);
     }
 
     public Rent save(RentRequest rentRequest) {
@@ -43,20 +42,8 @@ public class RentService {
 
     private Rent saveRent(RentRequest rentRequest, Rent rent) {
         rent.setData(rentRequest);
-        rent.setBoardGame(
-                boardGameRepository.findById(rentRequest.getBoardgameId()).
-                    orElseThrow(
-                        ()-> new EntityNotFoundException("BoardGame on id " + rentRequest.getBoardgameId() + " not found")
-                ));
-
-        rent.setRenter(
-                renterRepository.findById(rentRequest.getRenterId()).
-                        orElseThrow(
-                                () -> new EntityNotFoundException("Renter with id " + rentRequest.getRenterId() + " not found")
-                        )
-
-        );
-
+        rent.setBoardGame(boardGameRepository.getValidBoardGameById(rentRequest.getBoardGameId()));
+        rent.setRenter(renterRepository.getValidRenterById(rentRequest.getRenterId()));
         return rentRepository.save(rent);
     }
 

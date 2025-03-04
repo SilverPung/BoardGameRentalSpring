@@ -26,8 +26,7 @@ public class EventService {
     }
 
     public Event getById(Long id) {
-        return eventRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Event on id " + id + " not found"));
+        return eventRepository.getValidEventById(id);
     }
 
     public Event save(Event event) {

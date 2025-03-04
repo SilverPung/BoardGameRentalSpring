@@ -14,5 +14,5 @@ public class RentRequest {
 
     boolean returned;
     long renterId;
-    long boardgameId;
+    long boardGameId;
 }

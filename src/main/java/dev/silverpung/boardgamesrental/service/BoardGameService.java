@@ -30,8 +30,7 @@ public class BoardGameService {
     }
 
     public BoardGame getById(Long id) {
-        return boardGameRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("BoardGame on id " + id + " not found"));
+        return boardGameRepository.getValidBoardGameById(id);
     }
 
 
@@ -46,8 +45,7 @@ public class BoardGameService {
 
     public BoardGame save(BoardGameRequest boardGameRequest) {
         BoardGame boardGame = new BoardGame();
-        boardGame.setEvent(eventRepository.findById(boardGameRequest.getEventId()).orElseThrow(
-                () -> new EntityNotFoundException("Event with id " + boardGameRequest.getEventId() + " not found")));
+        boardGame.setEvent(eventRepository.getValidEventById(boardGameRequest.getEventId()));
 
         boardGame.setData(boardGameRequest);
 
@@ -56,11 +54,8 @@ public class BoardGameService {
     }
 
     public BoardGame update(Long id, BoardGameRequest boardGameRequest) {
-        BoardGame boardGame = boardGameRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("BoardGame on id " + id + " not found"));
-        boardGame.setEvent(eventRepository.findById(boardGameRequest.getEventId()).orElseThrow(
-                () -> new EntityNotFoundException("Event with id " + boardGameRequest.getEventId() + " not found")));
-        boardGame.setData(boardGameRequest);
+        BoardGame boardGame = boardGameRepository.getValidBoardGameById(id);
+        boardGame.setEvent(eventRepository.getValidEventById(boardGameRequest.getEventId()));
         return boardGameRepository.save(boardGame);
     }
 

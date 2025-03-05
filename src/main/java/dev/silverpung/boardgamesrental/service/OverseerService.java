@@ -5,6 +5,7 @@ import dev.silverpung.boardgamesrental.model.Overseer;
 import dev.silverpung.boardgamesrental.repository.OverseerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,10 +16,12 @@ import java.util.List;
 public class OverseerService {
 
     private final OverseerRepository overseerRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public OverseerService(OverseerRepository overseerRepository) {
+    public OverseerService(OverseerRepository overseerRepository, PasswordEncoder passwordEncoder) {
         this.overseerRepository = overseerRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Overseer> getAll() {
@@ -31,7 +34,7 @@ public class OverseerService {
     }
 
     public Overseer save(Overseer overseer) {
-        return overseerRepository.save(overseer);
+        return saveCode(overseer);
     }
 
     public void delete(Long id) {
@@ -42,10 +45,21 @@ public class OverseerService {
     }
 
     public Overseer update(long id,Overseer overseer) {
-        if(!overseerRepository.existsById(id)){
-            throw new EntityNotFoundException("Overseer on id " + id + " not found");
-        }
+        Overseer overseerToUpdate = overseerRepository.getValidOverseerById(id);
         overseer.setId(id);
+        if(overseer.getPassword() == null){
+            overseer.setPassword(overseerToUpdate.getPassword());
+            return overseerRepository.save(overseer);
+        }
+        return saveCode(overseer);
+    }
+
+    private Overseer saveCode(Overseer overseer) {
+        if (overseer.getPassword() != null) {
+            overseer.setPassword(passwordEncoder.encode(overseer.getPassword()));
+        }
         return overseerRepository.save(overseer);
     }
+
+
 }

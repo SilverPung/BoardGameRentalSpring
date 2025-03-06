@@ -5,6 +5,7 @@ import dev.silverpung.boardgamesrental.model.Renter;
 import dev.silverpung.boardgamesrental.model.request.RenterRequest;
 import dev.silverpung.boardgamesrental.repository.EventRepository;
 import dev.silverpung.boardgamesrental.repository.RenterRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,9 +31,7 @@ public class RenterService {
     }
 
     public Renter getById(Long id) {
-        return renterRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Renter with id " + id + " not found")
-        );
+        return renterRepository.getValidRenterById(id);
     }
 
     public Renter save(RenterRequest renterRequest) {
@@ -44,7 +43,7 @@ public class RenterService {
 
     public void delete(Long id) {
         if(!renterRepository.existsById(id)){
-            throw new RuntimeException("Renter with id " + id + " not found");
+            throw new EntityNotFoundException("Renter with id " + id + " not found");
         }
         renterRepository.deleteById(id);
     }

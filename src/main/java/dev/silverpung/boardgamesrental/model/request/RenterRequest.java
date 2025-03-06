@@ -12,7 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class RenterRequest {
 
-    long id;
     String barcode;
     String userName;
     long eventId;

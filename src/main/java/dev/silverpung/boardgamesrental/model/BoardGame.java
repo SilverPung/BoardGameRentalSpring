@@ -1,6 +1,8 @@
 package dev.silverpung.boardgamesrental.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import dev.silverpung.boardgamesrental.model.request.BoardGameRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -30,6 +32,7 @@ public class BoardGame {
 
     private String notes;
 
+
     private int quantity;
     private int quantityAvailable;
 
@@ -42,12 +45,15 @@ public class BoardGame {
         this.quantityAvailable = quantityAvailable;
     }
 
+    @JsonIgnoreProperties("boardGames")
     @ManyToOne
     @JoinColumn(name = "eventId", nullable = false)
     private Event event;
 
+
+    @JsonIgnoreProperties("boardGame")
     @OneToMany(mappedBy = "boardGame", cascade = CascadeType.REMOVE)
-    private Set<Rents> rents;
+    private Set<Rent> rents;
 
     @Override
     public String toString() {
@@ -59,6 +65,15 @@ public class BoardGame {
                 ", quantity=" + quantity +
                 ", quantityAvailable=" + quantityAvailable +
                 '}';
+    }
+
+    public void setData(BoardGameRequest boardGameRequest) {
+        this.barcode = boardGameRequest.getBarcode();
+        this.name = boardGameRequest.getName();
+        this.description = boardGameRequest.getDescription();
+        this.notes = boardGameRequest.getNotes();
+        this.quantity = boardGameRequest.getQuantity();
+        this.quantityAvailable = boardGameRequest.getQuantityAvailable();
     }
 
 

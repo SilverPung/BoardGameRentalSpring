@@ -1,6 +1,8 @@
 package dev.silverpung.boardgamesrental.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import dev.silverpung.boardgamesrental.model.request.RenterRequest;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -23,18 +25,21 @@ public class Renter {
     private String barcode;
 
     @NotNull
-    private String name;
+    private String userName;
 
+    @JsonIgnoreProperties("renter")
     @ManyToOne
     @JoinColumn(name = "eventId", nullable = false)
     private Event event;
 
-    @OneToMany(mappedBy = "renter", cascade = CascadeType.REMOVE)
-    private Set<Rents> rentedGames;
 
-    public Renter(String barcode, String name) {
+    @JsonIgnoreProperties("renter")
+    @OneToMany(mappedBy = "renter", cascade = CascadeType.REMOVE)
+    private Set<Rent> rentedGames;
+
+    public Renter(String barcode, String userName) {
         this.barcode = barcode;
-        this.name = name;
+        this.userName = userName;
     }
 
     @Override
@@ -42,7 +47,12 @@ public class Renter {
         return "Renter{" +
                 "id=" + id +
                 ", barcode='" + barcode + '\'' +
-                ", name='" + name + '\'' +
+                ", name='" + userName + '\'' +
                 '}';
+    }
+
+    public void setData(RenterRequest renterRequest) {
+        this.barcode = renterRequest.getBarcode();
+        this.userName = renterRequest.getUserName();
     }
 }

@@ -8,13 +8,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"overseerId", "eventId"})})
-public class OverseerEvent {
+public class OverseerEvent implements GrantedAuthority{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,5 +48,10 @@ public class OverseerEvent {
                 ", overseer=" + overseer +
                 ", event=" + event +
                 '}';
+    }
+
+    @Override
+    public String getAuthority() {
+        return permissionsType.toString();
     }
 }

@@ -20,6 +20,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
@@ -27,10 +28,12 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig{
 
     private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final JWTFilter jwtFilter;
 
     @Autowired
-    public SecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl) {
+    public SecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl, JWTFilter jwtFilter) {
         this.userDetailsServiceImpl = userDetailsServiceImpl;
+        this.jwtFilter = jwtFilter;
     }
 
     @Bean
@@ -43,6 +46,7 @@ public class SecurityConfig{
                         .requestMatchers("/api/v1/event/**").authenticated()  // Authenticate event endpoints
                         .anyRequest().denyAll()  // Deny any other requests
                 )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable // Disable CSRF protection (not recommended for production)

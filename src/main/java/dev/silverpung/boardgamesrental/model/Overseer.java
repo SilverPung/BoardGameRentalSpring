@@ -43,7 +43,7 @@ public class Overseer implements UserDetails{
     private String password;
 
     @JsonIgnoreProperties("overseer")
-    @OneToMany(mappedBy = "overseer", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "overseer", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<OverseerEvent> overseerEvents;
 
     public Overseer() {
